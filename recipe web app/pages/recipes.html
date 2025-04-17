@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Recipes - Savory Seasons</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/recipe-detail.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Savory Seasons</h1>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                    <nav>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="recipes.html" style="color: var(--terracotta);">Recipes</a></li>
+                            <li><a href="categories.html">Categories</a></li>
+                            <li><a href="../about.html">About</a></li>
+                            <li><a href="../contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <div class="search-bar">
+                        <input type="text" id="recipe-search" placeholder="Search recipes...">
+                        <button>🔍</button>
+                    </div>
+                    <button id="createRecipeBtn" class="create-recipe-btn" onclick="showCreateRecipeForm()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create Recipe
+                    </button>
+                    <div class="dark-mode-toggle">
+                        <span>☀️</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>🌙</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+        <h1 class="section-heading">All Recipes</h1>
+
+        <div style="display: flex; gap: 30px; margin-bottom: 40px;">
+            <!-- Filters Section -->
+            <div class="filter-sidebar" style="display: block; flex: 0 0 250px;">
+                <h3 style="margin-bottom: 20px; color: var(--primary-green); font-size: 20px;">Filters</h3>
+
+                <div class="filter-section">
+                    <h3>Meal Type</h3>
+                    <div class="filter-options">
+                        <div class="filter-tag" data-filter="meal" data-value="breakfast">Breakfast</div>
+                        <div class="filter-tag" data-filter="meal" data-value="lunch">Lunch</div>
+                        <div class="filter-tag" data-filter="meal" data-value="dinner">Dinner</div>
+                        <div class="filter-tag" data-filter="meal" data-value="dessert">Dessert</div>
+                        <div class="filter-tag" data-filter="meal" data-value="snack">Snack</div>
+                        <div class="filter-tag" data-filter="meal" data-value="beverage">Beverage</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Dietary Restrictions</h3>
+                    <div class="filter-options">
+                        <div class="filter-tag" data-filter="diet" data-value="vegetarian">Vegetarian</div>
+                        <div class="filter-tag" data-filter="diet" data-value="vegan">Vegan</div>
+                        <div class="filter-tag" data-filter="diet" data-value="gluten-free">Gluten-Free</div>
+                        <div class="filter-tag" data-filter="diet" data-value="dairy-free">Dairy-Free</div>
+                        <div class="filter-tag" data-filter="diet" data-value="nut-free">Nut-Free</div>
+                        <div class="filter-tag" data-filter="diet" data-value="keto">Keto</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Cooking Time</h3>
+                    <div class="filter-range">
+                        <input type="range" min="5" max="120" value="60" id="timeRange" class="time-slider">
+                        <div class="filter-value" id="timeValue">60 min or less</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Difficulty Level</h3>
+                    <div class="filter-options">
+                        <div class="filter-tag" data-filter="difficulty" data-value="all">All</div>
+                        <div class="filter-tag" data-filter="difficulty" data-value="easy">Easy</div>
+                        <div class="filter-tag" data-filter="difficulty" data-value="medium">Medium</div>
+                        <div class="filter-tag" data-filter="difficulty" data-value="hard">Hard</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Cuisine</h3>
+                    <div class="filter-options">
+                        <div class="filter-tag" data-filter="cuisine" data-value="italian">Italian</div>
+                        <div class="filter-tag" data-filter="cuisine" data-value="mexican">Mexican</div>
+                        <div class="filter-tag" data-filter="cuisine" data-value="indian">Indian</div>
+                        <div class="filter-tag" data-filter="cuisine" data-value="asian">Asian</div>
+                        <div class="filter-tag" data-filter="cuisine" data-value="american">American</div>
+                        <div class="filter-tag" data-filter="cuisine" data-value="mediterranean">Mediterranean</div>
+                    </div>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Cooking Method</h3>
+                    <div class="filter-options">
+                        <div class="filter-tag" data-filter="method" data-value="baking">Baking</div>
+                        <div class="filter-tag" data-filter="method" data-value="grilling">Grilling</div>
+                        <div class="filter-tag" data-filter="method" data-value="air-fryer">Air Fryer</div>
+                        <div class="filter-tag" data-filter="method" data-value="slow-cooker">Slow Cooker</div>
+                        <div class="filter-tag" data-filter="method" data-value="no-cook">No-Cook</div>
+                        <div class="filter-tag" data-filter="method" data-value="one-pot">One-Pot</div>
+                    </div>
+                </div>
+
+                <button id="clear-filters" class="btn" style="width: 100%; margin-top: 20px;">Clear All Filters</button>
+            </div>
+
+            <!-- Recipe Results -->
+            <div style="flex: 1;">
+                <div class="sort-options"
+                    style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
+                    <p><span id="recipe-count">12</span> recipes found</p>
+                    <div style="display: flex; gap: 15px;">
+                        <button id="difficulty-sort" class="sort-btn">Sort by Difficulty</button>
+                        <button id="time-sort" class="sort-btn">Sort by Time</button>
+                    </div>
+                </div>
+
+                <div class="active-filters" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
+                    <!-- Active filters will be added here dynamically -->
+                </div>
+
+                <div id="recipes-grid" class="recipes-grid">
+                    <!-- Recipe Card 1 -->
+                    <div class="recipe-card" data-cooking-time="45" data-difficulty="medium" data-cuisine="indian"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-medium">Medium</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Aromatic Chicken Curry</h3>
+                            <p>Rich and flavorful curry with tender chicken pieces, aromatic spices, and a velvety
+                                sauce.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 45 mins</div>
+                                <div><i>🍳</i> Indian</div>
+                            </div>
+                            <button class="view-details-btn" data-id="1">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 2 -->
+                    <div class="recipe-card" data-cooking-time="50" data-difficulty="easy" data-cuisine="american"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-easy">Easy</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Classic Margherita Pizza</h3>
+                            <p>A simple yet delicious pizza topped with fresh mozzarella, tomatoes, and basil.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 35 mins</div>
+                                <div><i>🍕</i> Italian</div>
+                            </div>
+                            <button class="view-details-btn" data-id="2">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 3 -->
+                    <div class="recipe-card" data-cooking-time="20" data-difficulty="medium" data-cuisine="seafood"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-medium">Medium</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1565557623262-b51c2513a641?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Garlic Butter Shrimp</h3>
+                            <p>Succulent shrimp sautéed in a garlic butter sauce with a hint of lemon and fresh herbs.
+                            </p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 20 mins</div>
+                                <div><i>🦐</i> Seafood</div>
+                            </div>
+                            <button class="view-details-btn" data-id="3">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 4 -->
+                    <div class="recipe-card" data-cooking-time="30" data-difficulty="medium" data-cuisine="mexican"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-medium">Medium</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1570461226913-e56a75a42dfe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1974&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Sizzling Chicken Fajitas</h3>
+                            <p>Juicy chicken strips with colorful bell peppers and onions, served with warm tortillas.
+                            </p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 30 mins</div>
+                                <div><i>🌮</i> Mexican</div>
+                            </div>
+                            <button class="view-details-btn" data-id="4">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 5 -->
+                    <div class="recipe-card" data-cooking-time="90" data-difficulty="easy" data-cuisine="indian"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-easy">Easy</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-4.0.3&auto=format&fit=crop&w=1776&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Indian Thali Platter</h3>
+                            <p>A flavorful assortment of traditional Indian dishes with rice, breads, and chutneys.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 90 mins</div>
+                                <div><i>🍛</i> Indian</div>
+                            </div>
+                            <button class="view-details-btn" data-id="5">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 6 -->
+                    <div class="recipe-card" data-cooking-time="40" data-difficulty="hard" data-cuisine="american"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-hard">Hard</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1546964124-0cce460f38ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Perfect Filet Mignon</h3>
+                            <p>Tender filet mignon cooked to perfection, served with roasted potatoes and asparagus.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 40 mins</div>
+                                <div><i>🥩</i> Steak</div>
+                            </div>
+                            <button class="view-details-btn" data-id="6">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 7 -->
+                    <div class="recipe-card" data-cooking-time="15" data-difficulty="easy" data-cuisine="american"
+                        data-meal="breakfast">
+                        <div class="recipe-difficulty difficulty-easy">Easy</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1525351484163-7529414344d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1980&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Avocado Toast with Poached Egg</h3>
+                            <p>A nutritious breakfast featuring creamy avocado and perfectly poached eggs on artisan
+                                toast.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 15 mins</div>
+                                <div><i>🍳</i> Breakfast</div>
+                            </div>
+                            <button class="view-details-btn" data-id="7">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 8 -->
+                    <div class="recipe-card" data-cooking-time="25" data-difficulty="medium" data-cuisine="american"
+                        data-meal="dessert">
+                        <div class="recipe-difficulty difficulty-medium">Medium</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1624353365286-3f8d62daad51?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1970&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Chocolate Lava Cake</h3>
+                            <p>Decadent individual chocolate cakes with a gooey molten center that flows when cut into.
+                            </p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 25 mins</div>
+                                <div><i>🍰</i> Dessert</div>
+                            </div>
+                            <button class="view-details-btn" data-id="8">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Recipe Card 9 -->
+                    <div class="recipe-card" data-cooking-time="120" data-difficulty="hard" data-cuisine="american"
+                        data-meal="dinner">
+                        <div class="recipe-difficulty difficulty-hard">Hard</div>
+                        <div class="card-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80');">
+                        </div>
+                        <div class="card-content">
+                            <h3>Classic Beef Wellington</h3>
+                            <p>Tender beef fillet wrapped in layers of mushroom duxelles, prosciutto, and flaky puff
+                                pastry.</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> 120 mins</div>
+                                <div><i>🍖</i> Dinner</div>
+                            </div>
+                            <button class="view-details-btn" data-id="9">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <nav class="mobile-nav">
+        <a href="../index.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <span>Home</span>
+        </a>
+        <a href="recipes.html" class="mobile-nav-item active">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <span>Recipes</span>
+        </a>
+        <a href="#" class="mobile-nav-item" onclick="showCreateRecipeForm(); return false;">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+            </div>
+            <span>Create</span>
+        </a>
+        <a href="#" class="mobile-nav-item" onclick="showSavedRecipes(); return false;">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+            </div>
+            <span>Saved</span>
+        </a>
+    </nav>
+
+    <!-- Create Recipe Modal -->
+    <div id="createRecipeModal" class="modal">
+        <!-- This is a duplicate of the modal in index.html - it will be handled by JS -->
+    </div>
+
+    <!-- Saved Recipes Section -->
+    <div id="saved-recipes" class="container" style="display: none;">
+        <!-- This will be populated by JavaScript -->
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Recipe Blog - Savory Seasons</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+    <script src="../js/recipe-form.js"></script>
+    <script src="../js/recipe-detail.js"></script>
+    <script src="../js/cooking-mode.js"></script>
+    <script src="../js/recipes.js"></script>
+</body>
+
+</html>

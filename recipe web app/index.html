@@ -1,0 +1,2668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Savory Seasons</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/recipe-detail.css">
+  <link rel="stylesheet" href="css/forms.css">
+  <link rel="stylesheet" href="css/mobile.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+  <!-- Header & Navigation -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>Savory Seasons</h1>
+        </div>
+        <div style="display: flex; align-items: center; width: 100%;">
+          <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+          <nav>
+            <ul>
+              <li><a href="index.html" style="color: var(--terracotta);">Home</a></li>
+              <li><a href="pages/recipes.html" id="recipesLink">Recipes</a></li>
+              <li><a href="pages/categories.html">Categories</a></li>
+              <li><a href="about.html">About</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </nav>
+          <div class="search-bar">
+            <input type="text" placeholder="Search recipes...">
+            <button>🔍</button>
+          </div>
+          <button id="createRecipeBtn" class="create-recipe-btn" onclick="showCreateRecipeForm()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Create Recipe
+          </button>
+          <button id="savedRecipesBtn" class="saved-recipes-btn" onclick="showSavedRecipes()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+              </path>
+            </svg>
+            Saved Recipes
+          </button>
+          <div class="dark-mode-toggle">
+            <span>☀️</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="darkModeToggle">
+              <span class="toggle-slider"></span>
+            </label>
+            <span>🌙</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Home Page Content -->
+  <div id="homepage">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-slide">
+        <div class="hero-content">
+          <h2>Classic Beef Stew with Garden Vegetables</h2>
+          <p>A hearty and flavorful beef stew with aromatic herbs and seasonal vegetables, perfect for cool evenings.
+          </p>
+          <a href="#recipe" class="btn">View Recipe</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recipe Modal -->
+    <div id="recipeModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Create New Recipe</h2>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="recipeForm" data-mode="create">
+            <div class="form-group">
+              <label for="recipeName">Recipe Name*</label>
+              <input type="text" id="recipeName" placeholder="Enter recipe name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="recipeDescription">Description*</label>
+              <textarea id="recipeDescription" placeholder="Brief description of your recipe" required></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="prepTime">Prep Time (mins)*</label>
+                <input type="number" id="prepTime" min="1" placeholder="Prep time" required>
+              </div>
+
+              <div class="form-group">
+                <label for="cookTime">Cook Time (mins)*</label>
+                <input type="number" id="cookTime" min="1" placeholder="Cook time" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="servings">Servings*</label>
+                <input type="number" id="servings" min="1" placeholder="Number of servings" required>
+              </div>
+
+              <div class="form-group">
+                <label for="difficulty">Difficulty*</label>
+                <select id="difficulty" required>
+                  <option value="">Select difficulty</option>
+                  <option value="easy">Easy</option>
+                  <option value="medium">Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="imageUrl">Recipe Image URL</label>
+              <input type="url" id="imageUrl" placeholder="https://example.com/image.jpg (Leave empty for placeholder)">
+            </div>
+
+            <div class="form-group">
+              <label>Ingredients*</label>
+              <div id="ingredientsList"></div>
+              <button type="button" id="addIngredient" class="add-btn">Add Ingredient</button>
+            </div>
+
+            <div class="form-group">
+              <label>Instructions*</label>
+              <div id="instructionsList"></div>
+              <button type="button" id="addInstruction" class="add-btn">Add Instruction</button>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category*</label>
+              <select id="category" required>
+                <option value="">Select category</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="dessert">Dessert</option>
+                <option value="snack">Snack</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn cancel close-modal">Cancel</button>
+              <button type="submit" class="btn primary">Save Recipe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Saved Recipes Section -->
+    <div id="savedRecipesSection" class="saved-recipes-section empty">
+      <div class="saved-recipes-header">
+        <h2>My Saved Recipes</h2>
+        <button class="close-saved-recipes">&times;</button>
+      </div>
+
+      <div id="savedRecipesEmpty" class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>No Saved Recipes Yet</h3>
+        <p>Your favorite recipes will appear here once you save them.</p>
+        <button class="btn primary create-recipe-btn">Create Your First Recipe</button>
+      </div>
+
+      <div id="savedRecipesContainer" class="recipes-grid"></div>
+    </div>
+
+    <div class="container">
+      <!-- Filter Toggle for Mobile -->
+      <button class="filter-toggle">Filters <span>▼</span></button>
+
+      <!-- Filter Sidebar -->
+      <section class="filter-sidebar">
+        <h2 class="section-heading">Filter Recipes</h2>
+
+        <div class="filter-section">
+          <h3>Dietary Restrictions</h3>
+          <div class="filter-options">
+            <div class="filter-tag">Vegetarian</div>
+            <div class="filter-tag">Vegan</div>
+            <div class="filter-tag">Gluten-Free</div>
+            <div class="filter-tag">Dairy-Free</div>
+            <div class="filter-tag">Nut-Free</div>
+            <div class="filter-tag">Keto</div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Cooking Time</h3>
+          <div class="filter-range">
+            <input type="range" min="5" max="120" value="30" id="timeRange">
+            <div class="filter-value" id="timeValue">30 min</div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Difficulty Level</h3>
+          <div class="filter-options">
+            <div class="filter-tag active">All</div>
+            <div class="filter-tag">Easy</div>
+            <div class="filter-tag">Medium</div>
+            <div class="filter-tag">Hard</div>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h3>Cooking Method</h3>
+          <div class="filter-options">
+            <div class="filter-tag">Baking</div>
+            <div class="filter-tag">Grilling</div>
+            <div class="filter-tag">Air Fryer</div>
+            <div class="filter-tag">Slow Cooker</div>
+            <div class="filter-tag">No-Cook</div>
+            <div class="filter-tag">One-Pot</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Latest Recipes Section -->
+      <section class="latest-recipes">
+        <h2 class="section-heading">Latest Recipes</h2>
+        <div class="recipes-grid">
+          <!-- Recipe Card 1 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-medium">Medium</div>
+            <div class="card-image"
+              style="background-image: url('assets/curry-with-chicken-onions-indian-food-asian-cuisine_2829-4415.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Aromatic Chicken Curry</h3>
+              <p>Rich and flavorful curry with tender chicken pieces, aromatic spices, and a velvety sauce.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 45 mins</div>
+                <div><i>🍳</i> One-Pot</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('curry')">View Recipe</button>
+            </div>
+          </div>
+
+          <!-- Recipe Card 2 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-easy">Easy</div>
+            <div class="card-image"
+              style="background-image: url('assets/front-view-meat-sauce-soup-with-greens-potatoes-dark-desk-soup-meal-sauce-meat_140725-79067.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Hearty Meat & Vegetable Soup</h3>
+              <p>A satisfying soup loaded with tender meat, potatoes, and fresh herbs in a rich broth.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 50 mins</div>
+                <div><i>🥗</i> Comfort Food</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('soup')">View Recipe</button>
+            </div>
+          </div>
+
+          <!-- Recipe Card 3 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-medium">Medium</div>
+            <div class="card-image" style="background-image: url('assets/fried-shrimp-with-garlic_1339-57964.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Garlic Butter Shrimp</h3>
+              <p>Succulent shrimp sautéed in a garlic butter sauce with a hint of lemon and fresh herbs.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 20 mins</div>
+                <div><i>🦐</i> Seafood</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('shrimp')">View Recipe</button>
+            </div>
+          </div>
+
+          <!-- Recipe Card 4 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-medium">Medium</div>
+            <div class="card-image"
+              style="background-image: url('assets/chicken-fajita-chicken-fillet-fried-with-bell-pepper-lavash-with-bread-slices-white-plate_114579-144.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Sizzling Chicken Fajitas</h3>
+              <p>Juicy chicken strips with colorful bell peppers and onions, served with warm tortillas.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 30 mins</div>
+                <div><i>🌮</i> Mexican</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('fajitas')">View Recipe</button>
+            </div>
+          </div>
+
+          <!-- Recipe Card 5 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-easy">Easy</div>
+            <div class="card-image"
+              style="background-image: url('assets/delicious-indian-food-tray_23-2148723505.avif');"></div>
+            <div class="card-content">
+              <h3>Indian Thali Platter</h3>
+              <p>A flavorful assortment of traditional Indian dishes with rice, breads, and chutneys.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 90 mins</div>
+                <div><i>🍛</i> Indian</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('thali')">View Recipe</button>
+            </div>
+          </div>
+
+          <!-- Recipe Card 6 -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-hard">Hard</div>
+            <div class="card-image"
+              style="background-image: url('assets/isolated-plate-fillet-mignon-steak-with-potato_219193-7303.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Perfect Filet Mignon</h3>
+              <p>Tender filet mignon cooked to perfection, served with roasted potatoes and asparagus.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 40 mins</div>
+                <div><i>🥩</i> Steak</div>
+              </div>
+              <button class="view-details-btn" onclick="showRecipeDetail('steak')">View Recipe</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Categories Section -->
+      <section class="categories">
+        <h2 class="section-heading">Browse by Category</h2>
+        <div class="categories-grid">
+          <a href="pages/categories.html#breakfast" class="category-item"
+            style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🍳</div>
+            <h4>Breakfast</h4>
+          </a>
+          <a href="pages/categories.html#soups-stews" class="category-item"
+            style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🍲</div>
+            <h4>Soups & Stews</h4>
+          </a>
+          <a href="pages/categories.html#meat-poultry" class="category-item"
+            style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🥩</div>
+            <h4>Meat & Poultry</h4>
+          </a>
+          <a href="pages/categories.html#seafood" class="category-item" style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🦐</div>
+            <h4>Seafood</h4>
+          </a>
+          <a href="pages/categories.html#vegetarian" class="category-item"
+            style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🥗</div>
+            <h4>Vegetarian</h4>
+          </a>
+          <a href="pages/categories.html#international" class="category-item"
+            style="text-decoration: none; color: inherit;">
+            <div class="category-icon">🌮</div>
+            <h4>International</h4>
+          </a>
+        </div>
+      </section>
+
+      <!-- Featured Cuisines -->
+      <section class="latest-recipes">
+        <h2 class="section-heading">Featured Cuisines</h2>
+        <div class="recipes-grid">
+          <!-- Pakistani Cuisine -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-medium">Medium</div>
+            <div class="card-image"
+              style="background-image: url('assets/top-view-composition-different-pakistan-goodies_23-2148821564.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Pakistani Feast Platter</h3>
+              <p>A delightful assortment of authentic Pakistani dishes featuring aromatic rice, tender meat, and
+                flavorful curries.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 120 mins</div>
+                <div><i>🍛</i> Pakistani</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stuffed Potatoes -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-easy">Easy</div>
+            <div class="card-image"
+              style="background-image: url('assets/top-view-baked-potatoes-with-minced-meat-greens-inside-plate-dark-blue-desk_140725-49961.avif');">
+            </div>
+            <div class="card-content">
+              <h3>Baked Stuffed Potatoes</h3>
+              <p>Twice-baked potatoes filled with savory minced meat, cheese, and herbs for a satisfying meal.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 45 mins</div>
+                <div><i>🥔</i> Comfort Food</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Placeholder for third recipe -->
+          <div class="recipe-card">
+            <div class="recipe-difficulty difficulty-medium">Medium</div>
+            <div class="card-image"
+              style="background-image: url('https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+            </div>
+            <div class="card-content">
+              <h3>Homemade Pasta with Fresh Herbs</h3>
+              <p>Hand-rolled pasta with a light sauce, fresh herbs, and seasonal vegetables.</p>
+              <div class="recipe-meta">
+                <div><i>⏱️</i> 60 mins</div>
+                <div><i>🍝</i> Italian</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation Bar -->
+  <nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item active">
+      <div class="mobile-nav-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </div>
+      <span>Home</span>
+    </a>
+    <a href="pages/recipes.html" class="mobile-nav-item">
+      <div class="mobile-nav-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+        </svg>
+      </div>
+      <span>Recipes</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="showCreateRecipeForm(); return false;">
+      <div class="mobile-nav-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="16"></line>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+      </div>
+      <span>Create</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="showSavedRecipes(); return false;">
+      <div class="mobile-nav-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path
+            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+          </path>
+        </svg>
+      </div>
+      <span>Saved</span>
+    </a>
+
+  </nav>
+
+  <!-- Recipe Detail Page -->
+  <div id="recipe" style="display: none;">
+    <div class="container">
+      <div class="recipe-detail">
+        <div class="recipe-header"
+          style="background-image: url('assets/meat-sadj-vegetables-greens-spices-top-view_140725-11308.avif');">
+          <div class="recipe-header-overlay">
+            <h1>Classic Beef Stew with Garden Vegetables</h1>
+            <p>A hearty and flavorful beef stew with aromatic herbs and seasonal vegetables, perfect for cool evenings.
+            </p>
+          </div>
+        </div>
+
+        <div class="recipe-actions">
+          <button onclick="backToHome()" class="back-btn"><i>←</i> Back</button>
+          <div>
+            <button onclick="printRecipe()"><i>🖨️</i> Print Recipe</button>
+            <button onclick="saveRecipe()" id="saveButton"><i>♥</i> Save Recipe</button>
+            <button onclick="toggleCookingMode()" class="cooking-mode-btn"><i>👨‍🍳</i> Cooking Mode</button>
+          </div>
+        </div>
+
+        <div class="recipe-details-meta">
+          <div class="meta-item">
+            <h4>Prep Time</h4>
+            <p>20 minutes</p>
+          </div>
+          <div class="meta-item">
+            <h4>Cook Time</h4>
+            <p>2 hours</p>
+          </div>
+          <div class="meta-item">
+            <h4>Servings</h4>
+            <div class="servings-control">
+              <button onclick="adjustServings(-1)">-</button>
+              <span id="servingsCount">6</span>
+              <button onclick="adjustServings(1)">+</button>
+            </div>
+          </div>
+          <div class="meta-item">
+            <h4>Difficulty</h4>
+            <p><span class="difficulty-badge medium">Medium</span></p>
+          </div>
+        </div>
+
+        <div class="recipe-content">
+          <div class="ingredients">
+            <h3>Ingredients</h3>
+            <div class="ingredients-actions">
+              <button class="add-to-shopping"><i>🛒</i> Add to Shopping List</button>
+              <div class="measurement-toggle">
+                <span>US</span>
+                <label class="toggle-switch small">
+                  <input type="checkbox" id="measurementToggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span>Metric</span>
+              </div>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">2</span> pounds beef chuck, cut into 1-inch cubes</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1/4</span> cup all-purpose flour</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">2</span> tablespoons olive oil</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">2</span> tablespoons butter</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> large onion, chopped</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">3</span> cloves garlic, minced</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> cup red wine (optional)</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">4</span> cups beef broth</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">2</span> tablespoons tomato paste</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> bay leaf</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> teaspoon dried thyme</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">3</span> medium carrots, sliced</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">2</span> celery stalks, sliced</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> pound baby potatoes, halved</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span><span class="ingredient-amount">1</span> cup frozen peas</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span>Salt and pepper to taste</span>
+            </div>
+            <div class="ingredient-item">
+              <input type="checkbox">
+              <span>Freshly chopped parsley for garnish</span>
+            </div>
+          </div>
+
+          <div class="instructions">
+            <h3>Instructions</h3>
+            <div class="step">
+              <span class="step-number">1</span>
+              Season beef chunks with salt and pepper, then toss with flour until lightly coated.
+            </div>
+            <div class="step">
+              <span class="step-number">2</span>
+              In a large Dutch oven or heavy pot, heat olive oil over medium-high heat. Add beef in batches (don't
+              overcrowd) and brown on all sides, about 5 minutes per batch. Transfer to a plate.
+            </div>
+            <div class="step">
+              <span class="step-number">3</span>
+              In the same pot, add butter. Once melted, add onions and cook until softened, about 3 minutes. Add garlic
+              and cook for another minute.
+            </div>
+            <div class="step">
+              <span class="step-number">4</span>
+              Pour in wine (if using) and scrape up any browned bits from the bottom of the pot. Let simmer for 2
+              minutes.
+            </div>
+            <div class="step">
+              <span class="step-number">5</span>
+              Return beef to the pot. Add beef broth, tomato paste, bay leaf, and thyme. Bring to a boil, then reduce
+              heat to low, cover, and simmer for 1 hour.
+            </div>
+            <div class="step">
+              <span class="step-number">6</span>
+              Add carrots, celery, and potatoes. Continue to simmer, covered, until vegetables and beef are tender,
+              about 45-60 minutes more.
+            </div>
+            <div class="step">
+              <span class="step-number">7</span>
+              Stir in frozen peas during the last 5 minutes of cooking.
+            </div>
+            <div class="step">
+              <span class="step-number">8</span>
+              Remove bay leaf. Taste and adjust seasoning with salt and pepper if needed.
+            </div>
+            <div class="step">
+              <span class="step-number">9</span>
+              Serve hot, garnished with fresh parsley.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recipe View Modal -->
+  <div class="modal" id="viewRecipeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="viewRecipeName">Recipe Name</h2>
+        <button class="close-btn" id="closeViewModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="recipe-view-container">
+          <div class="recipe-view-image">
+            <img id="viewRecipeImage" src="" alt="Recipe Image">
+          </div>
+          <div class="recipe-view-details">
+            <p id="viewRecipeDescription"></p>
+            <div class="recipe-meta">
+              <span><i class="fas fa-clock"></i> Prep: <span id="viewPrepTime"></span> min</span>
+              <span><i class="fas fa-fire"></i> Cook: <span id="viewCookTime"></span> min</span>
+              <span><i class="fas fa-utensils"></i> Serves: <span id="viewServings"></span></span>
+              <span><i class="fas fa-chart-line"></i> Difficulty: <span id="viewDifficulty"></span></span>
+            </div>
+            <div class="recipe-view-category">
+              <span class="category-tag" id="viewCategory"></span>
+            </div>
+          </div>
+        </div>
+
+        <h3>Ingredients</h3>
+        <ul id="viewIngredientsList" class="view-list"></ul>
+
+        <h3>Instructions</h3>
+        <ol id="viewInstructionsList" class="view-list"></ol>
+
+        <div class="recipe-date">
+          <!DOCTYPE html>
+          <html lang="en">
+
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+            <title>Savory Seasons</title>
+            <link rel="stylesheet" href="css/style.css">
+            <link rel="stylesheet" href="css/home.css">
+            <link rel="stylesheet" href="css/recipe-detail.css">
+            <link rel="stylesheet" href="css/forms.css">
+            <link rel="stylesheet" href="css/mobile.css">
+            <link rel="stylesheet" href="css/animations.css">
+          </head>
+
+          <body>
+            <!-- Header & Navigation -->
+            <header>
+              <div class="container">
+                <div class="header-content">
+                  <div class="logo">
+                    <h1>Savory Seasons</h1>
+                  </div>
+                  <div style="display: flex; align-items: center; width: 100%;">
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                    <nav>
+                      <ul>
+                        <li><a href="index.html" style="color: var(--terracotta);">Home</a></li>
+                        <li><a href="pages/recipes.html" id="recipesLink">Recipes</a></li>
+                        <li><a href="pages/categories.html">Categories</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                      </ul>
+                    </nav>
+                    <div class="search-bar">
+                      <input type="text" placeholder="Search recipes...">
+                      <button>🔍</button>
+                    </div>
+                    <button id="createRecipeBtn" class="create-recipe-btn" onclick="showCreateRecipeForm()">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                      </svg>
+                      Create Recipe
+                    </button>
+                    <button id="savedRecipesBtn" class="saved-recipes-btn" onclick="showSavedRecipes()">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                          d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                        </path>
+                      </svg>
+                      Saved Recipes
+                    </button>
+                    <div class="dark-mode-toggle">
+                      <span>☀️</span>
+                      <label class="toggle-switch">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="toggle-slider"></span>
+                      </label>
+                      <span>🌙</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <!-- Home Page Content -->
+            <div id="homepage">
+              <!-- Hero Section -->
+              <section class="hero">
+                <div class="hero-slide">
+                  <div class="hero-content">
+                    <h2>Classic Beef Stew with Garden Vegetables</h2>
+                    <p>A hearty and flavorful beef stew with aromatic herbs and seasonal vegetables, perfect for cool
+                      evenings.
+                    </p>
+                    <a href="#recipe" class="btn">View Recipe</a>
+                  </div>
+                </div>
+              </section>
+
+              <!-- Recipe Modal -->
+              <div id="recipeModal" class="modal">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h2 class="modal-title">Create New Recipe</h2>
+                    <button class="close-modal">&times;</button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="recipeForm" data-mode="create">
+                      <div class="form-group">
+                        <label for="recipeName">Recipe Name*</label>
+                        <input type="text" id="recipeName" placeholder="Enter recipe name" required>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="recipeDescription">Description*</label>
+                        <textarea id="recipeDescription" placeholder="Brief description of your recipe"
+                          required></textarea>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="prepTime">Prep Time (mins)*</label>
+                          <input type="number" id="prepTime" min="1" placeholder="Prep time" required>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="cookTime">Cook Time (mins)*</label>
+                          <input type="number" id="cookTime" min="1" placeholder="Cook time" required>
+                        </div>
+                      </div>
+
+                      <div class="form-row">
+                        <div class="form-group">
+                          <label for="servings">Servings*</label>
+                          <input type="number" id="servings" min="1" placeholder="Number of servings" required>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="difficulty">Difficulty*</label>
+                          <select id="difficulty" required>
+                            <option value="">Select difficulty</option>
+                            <option value="easy">Easy</option>
+                            <option value="medium">Medium</option>
+                            <option value="hard">Hard</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="imageUrl">Recipe Image URL</label>
+                        <input type="url" id="imageUrl"
+                          placeholder="https://example.com/image.jpg (Leave empty for placeholder)">
+                      </div>
+
+                      <div class="form-group">
+                        <label>Ingredients*</label>
+                        <div id="ingredientsList"></div>
+                        <button type="button" id="addIngredient" class="add-btn">Add Ingredient</button>
+                      </div>
+
+                      <div class="form-group">
+                        <label>Instructions*</label>
+                        <div id="instructionsList"></div>
+                        <button type="button" id="addInstruction" class="add-btn">Add Instruction</button>
+                      </div>
+
+                      <div class="form-group">
+                        <label for="category">Category*</label>
+                        <select id="category" required>
+                          <option value="">Select category</option>
+                          <option value="breakfast">Breakfast</option>
+                          <option value="lunch">Lunch</option>
+                          <option value="dinner">Dinner</option>
+                          <option value="appetizer">Appetizer</option>
+                          <option value="dessert">Dessert</option>
+                          <option value="snack">Snack</option>
+                        </select>
+                      </div>
+
+                      <div class="form-actions">
+                        <button type="button" class="btn cancel close-modal">Cancel</button>
+                        <button type="submit" class="btn primary">Save Recipe</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saved Recipes Section -->
+              <div id="savedRecipesSection" class="saved-recipes-section empty">
+                <div class="saved-recipes-header">
+                  <h2>My Saved Recipes</h2>
+                  <button class="close-saved-recipes">&times;</button>
+                </div>
+
+                <div id="savedRecipesEmpty" class="empty-state">
+                  <div class="empty-icon">📚</div>
+                  <h3>No Saved Recipes Yet</h3>
+                  <p>Your favorite recipes will appear here once you save them.</p>
+                  <button class="btn primary create-recipe-btn">Create Your First Recipe</button>
+                </div>
+
+                <div id="savedRecipesContainer" class="recipes-grid"></div>
+              </div>
+
+              <div class="container">
+                <!-- Filter Toggle for Mobile -->
+                <button class="filter-toggle">Filters <span>▼</span></button>
+
+                <!-- Filter Sidebar -->
+                <section class="filter-sidebar">
+                  <h2 class="section-heading">Filter Recipes</h2>
+
+                  <div class="filter-section">
+                    <h3>Dietary Restrictions</h3>
+                    <div class="filter-options">
+                      <div class="filter-tag">Vegetarian</div>
+                      <div class="filter-tag">Vegan</div>
+                      <div class="filter-tag">Gluten-Free</div>
+                      <div class="filter-tag">Dairy-Free</div>
+                      <div class="filter-tag">Nut-Free</div>
+                      <div class="filter-tag">Keto</div>
+                    </div>
+                  </div>
+
+                  <div class="filter-section">
+                    <h3>Cooking Time</h3>
+                    <div class="filter-range">
+                      <input type="range" min="5" max="120" value="30" id="timeRange">
+                      <div class="filter-value" id="timeValue">30 min</div>
+                    </div>
+                  </div>
+
+                  <div class="filter-section">
+                    <h3>Difficulty Level</h3>
+                    <div class="filter-options">
+                      <div class="filter-tag active">All</div>
+                      <div class="filter-tag">Easy</div>
+                      <div class="filter-tag">Medium</div>
+                      <div class="filter-tag">Hard</div>
+                    </div>
+                  </div>
+
+                  <div class="filter-section">
+                    <h3>Cooking Method</h3>
+                    <div class="filter-options">
+                      <div class="filter-tag">Baking</div>
+                      <div class="filter-tag">Grilling</div>
+                      <div class="filter-tag">Air Fryer</div>
+                      <div class="filter-tag">Slow Cooker</div>
+                      <div class="filter-tag">No-Cook</div>
+                      <div class="filter-tag">One-Pot</div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Latest Recipes Section -->
+                <section class="latest-recipes">
+                  <h2 class="section-heading">Latest Recipes</h2>
+                  <div class="recipes-grid">
+                    <!-- Recipe Card 1 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-medium">Medium</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/curry-with-chicken-onions-indian-food-asian-cuisine_2829-4415.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Aromatic Chicken Curry</h3>
+                        <p>Rich and flavorful curry with tender chicken pieces, aromatic spices, and a velvety sauce.
+                        </p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 45 mins</div>
+                          <div><i>🍳</i> One-Pot</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('curry')">View Recipe</button>
+                      </div>
+                    </div>
+
+                    <!-- Recipe Card 2 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-easy">Easy</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/front-view-meat-sauce-soup-with-greens-potatoes-dark-desk-soup-meal-sauce-meat_140725-79067.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Hearty Meat & Vegetable Soup</h3>
+                        <p>A satisfying soup loaded with tender meat, potatoes, and fresh herbs in a rich broth.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 50 mins</div>
+                          <div><i>🥗</i> Comfort Food</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('soup')">View Recipe</button>
+                      </div>
+                    </div>
+
+                    <!-- Recipe Card 3 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-medium">Medium</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/fried-shrimp-with-garlic_1339-57964.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Garlic Butter Shrimp</h3>
+                        <p>Succulent shrimp sautéed in a garlic butter sauce with a hint of lemon and fresh herbs.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 20 mins</div>
+                          <div><i>🦐</i> Seafood</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('shrimp')">View Recipe</button>
+                      </div>
+                    </div>
+
+                    <!-- Recipe Card 4 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-medium">Medium</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/chicken-fajita-chicken-fillet-fried-with-bell-pepper-lavash-with-bread-slices-white-plate_114579-144.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Sizzling Chicken Fajitas</h3>
+                        <p>Juicy chicken strips with colorful bell peppers and onions, served with warm tortillas.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 30 mins</div>
+                          <div><i>🌮</i> Mexican</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('fajitas')">View Recipe</button>
+                      </div>
+                    </div>
+
+                    <!-- Recipe Card 5 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-easy">Easy</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/delicious-indian-food-tray_23-2148723505.avif');"></div>
+                      <div class="card-content">
+                        <h3>Indian Thali Platter</h3>
+                        <p>A flavorful assortment of traditional Indian dishes with rice, breads, and chutneys.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 90 mins</div>
+                          <div><i>🍛</i> Indian</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('thali')">View Recipe</button>
+                      </div>
+                    </div>
+
+                    <!-- Recipe Card 6 -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-hard">Hard</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/isolated-plate-fillet-mignon-steak-with-potato_219193-7303.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Perfect Filet Mignon</h3>
+                        <p>Tender filet mignon cooked to perfection, served with roasted potatoes and asparagus.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 40 mins</div>
+                          <div><i>🥩</i> Steak</div>
+                        </div>
+                        <button class="view-details-btn" onclick="showRecipeDetail('steak')">View Recipe</button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <!-- Categories Section -->
+                <section class="categories">
+                  <h2 class="section-heading">Browse by Category</h2>
+                  <div class="categories-grid">
+                    <a href="pages/categories.html#breakfast" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🍳</div>
+                      <h4>Breakfast</h4>
+                    </a>
+                    <a href="pages/categories.html#soups-stews" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🍲</div>
+                      <h4>Soups & Stews</h4>
+                    </a>
+                    <a href="pages/categories.html#meat-poultry" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🥩</div>
+                      <h4>Meat & Poultry</h4>
+                    </a>
+                    <a href="pages/categories.html#seafood" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🦐</div>
+                      <h4>Seafood</h4>
+                    </a>
+                    <a href="pages/categories.html#vegetarian" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🥗</div>
+                      <h4>Vegetarian</h4>
+                    </a>
+                    <a href="pages/categories.html#international" class="category-item"
+                      style="text-decoration: none; color: inherit;">
+                      <div class="category-icon">🌮</div>
+                      <h4>International</h4>
+                    </a>
+                  </div>
+                </section>
+
+                <!-- Featured Cuisines -->
+                <section class="latest-recipes">
+                  <h2 class="section-heading">Featured Cuisines</h2>
+                  <div class="recipes-grid">
+                    <!-- Pakistani Cuisine -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-medium">Medium</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/top-view-composition-different-pakistan-goodies_23-2148821564.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Pakistani Feast Platter</h3>
+                        <p>A delightful assortment of authentic Pakistani dishes featuring aromatic rice, tender meat,
+                          and
+                          flavorful curries.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 120 mins</div>
+                          <div><i>🍛</i> Pakistani</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Stuffed Potatoes -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-easy">Easy</div>
+                      <div class="card-image"
+                        style="background-image: url('assets/top-view-baked-potatoes-with-minced-meat-greens-inside-plate-dark-blue-desk_140725-49961.avif');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Baked Stuffed Potatoes</h3>
+                        <p>Twice-baked potatoes filled with savory minced meat, cheese, and herbs for a satisfying meal.
+                        </p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 45 mins</div>
+                          <div><i>🥔</i> Comfort Food</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Placeholder for third recipe -->
+                    <div class="recipe-card">
+                      <div class="recipe-difficulty difficulty-medium">Medium</div>
+                      <div class="card-image"
+                        style="background-image: url('https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');">
+                      </div>
+                      <div class="card-content">
+                        <h3>Homemade Pasta with Fresh Herbs</h3>
+                        <p>Hand-rolled pasta with a light sauce, fresh herbs, and seasonal vegetables.</p>
+                        <div class="recipe-meta">
+                          <div><i>⏱️</i> 60 mins</div>
+                          <div><i>🍝</i> Italian</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <!-- Mobile Navigation Bar -->
+            <nav class="mobile-nav">
+              <a href="index.html" class="mobile-nav-item active">
+                <div class="mobile-nav-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                  </svg>
+                </div>
+                <span>Home</span>
+              </a>
+              <a href="pages/recipes.html" class="mobile-nav-item">
+                <div class="mobile-nav-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                  </svg>
+                </div>
+                <span>Recipes</span>
+              </a>
+              <a href="#" class="mobile-nav-item" onclick="showCreateRecipeForm(); return false;">
+                <div class="mobile-nav-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                  </svg>
+                </div>
+                <span>Create</span>
+              </a>
+              <a href="#" class="mobile-nav-item" onclick="showSavedRecipes(); return false;">
+                <div class="mobile-nav-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                  </svg>
+                </div>
+                <span>Saved</span>
+              </a>
+
+            </nav>
+
+            <!-- Recipe Detail Page -->
+            <div id="recipe" style="display: none;">
+              <div class="container">
+                <div class="recipe-detail">
+                  <div class="recipe-header"
+                    style="background-image: url('assets/meat-sadj-vegetables-greens-spices-top-view_140725-11308.avif');">
+                    <div class="recipe-header-overlay">
+                      <h1>Classic Beef Stew with Garden Vegetables</h1>
+                      <p>A hearty and flavorful beef stew with aromatic herbs and seasonal vegetables, perfect for cool
+                        evenings.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="recipe-actions">
+                    <button onclick="backToHome()" class="back-btn"><i>←</i> Back</button>
+                    <div>
+                      <button onclick="printRecipe()"><i>🖨️</i> Print Recipe</button>
+                      <button onclick="saveRecipe()" id="saveButton"><i>♥</i> Save Recipe</button>
+                      <button onclick="toggleCookingMode()" class="cooking-mode-btn"><i>👨‍🍳</i> Cooking Mode</button>
+                    </div>
+                  </div>
+
+                  <div class="recipe-details-meta">
+                    <div class="meta-item">
+                      <h4>Prep Time</h4>
+                      <p>20 minutes</p>
+                    </div>
+                    <div class="meta-item">
+                      <h4>Cook Time</h4>
+                      <p>2 hours</p>
+                    </div>
+                    <div class="meta-item">
+                      <h4>Servings</h4>
+                      <div class="servings-control">
+                        <button onclick="adjustServings(-1)">-</button>
+                        <span id="servingsCount">6</span>
+                        <button onclick="adjustServings(1)">+</button>
+                      </div>
+                    </div>
+                    <div class="meta-item">
+                      <h4>Difficulty</h4>
+                      <p><span class="difficulty-badge medium">Medium</span></p>
+                    </div>
+                  </div>
+
+                  <div class="recipe-content">
+                    <div class="ingredients">
+                      <h3>Ingredients</h3>
+                      <div class="ingredients-actions">
+                        <button class="add-to-shopping"><i>🛒</i> Add to Shopping List</button>
+                        <div class="measurement-toggle">
+                          <span>US</span>
+                          <label class="toggle-switch small">
+                            <input type="checkbox" id="measurementToggle">
+                            <span class="toggle-slider"></span>
+                          </label>
+                          <span>Metric</span>
+                        </div>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">2</span> pounds beef chuck, cut into 1-inch cubes</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1/4</span> cup all-purpose flour</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">2</span> tablespoons olive oil</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">2</span> tablespoons butter</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> large onion, chopped</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">3</span> cloves garlic, minced</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> cup red wine (optional)</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">4</span> cups beef broth</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">2</span> tablespoons tomato paste</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> bay leaf</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> teaspoon dried thyme</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">3</span> medium carrots, sliced</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">2</span> celery stalks, sliced</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> pound baby potatoes, halved</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span><span class="ingredient-amount">1</span> cup frozen peas</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span>Salt and pepper to taste</span>
+                      </div>
+                      <div class="ingredient-item">
+                        <input type="checkbox">
+                        <span>Freshly chopped parsley for garnish</span>
+                      </div>
+                    </div>
+
+                    <div class="instructions">
+                      <h3>Instructions</h3>
+                      <div class="step">
+                        <span class="step-number">1</span>
+                        Season beef chunks with salt and pepper, then toss with flour until lightly coated.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">2</span>
+                        In a large Dutch oven or heavy pot, heat olive oil over medium-high heat. Add beef in batches
+                        (don't
+                        overcrowd) and brown on all sides, about 5 minutes per batch. Transfer to a plate.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">3</span>
+                        In the same pot, add butter. Once melted, add onions and cook until softened, about 3 minutes.
+                        Add garlic
+                        and cook for another minute.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">4</span>
+                        Pour in wine (if using) and scrape up any browned bits from the bottom of the pot. Let simmer
+                        for 2
+                        minutes.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">5</span>
+                        Return beef to the pot. Add beef broth, tomato paste, bay leaf, and thyme. Bring to a boil, then
+                        reduce
+                        heat to low, cover, and simmer for 1 hour.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">6</span>
+                        Add carrots, celery, and potatoes. Continue to simmer, covered, until vegetables and beef are
+                        tender,
+                        about 45-60 minutes more.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">7</span>
+                        Stir in frozen peas during the last 5 minutes of cooking.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">8</span>
+                        Remove bay leaf. Taste and adjust seasoning with salt and pepper if needed.
+                      </div>
+                      <div class="step">
+                        <span class="step-number">9</span>
+                        Serve hot, garnished with fresh parsley.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer>
+              <div class="container">
+                <p>© 2023 Recipe Blog - Savory Seasons</p>
+              </div>
+            </footer>
+
+            <!-- JavaScript -->
+            <script src="js/main.js"></script>
+            <script src="js/recipe-form.js"></script>
+            <script src="js/recipe-detail.js"></script>
+            <script src="js/cooking-mode.js"></script>
+
+            <!-- Notification styles -->
+            <div class="notification">
+              <span id="notification-message"></span>
+            </div>
+
+            <style>
+              /* Notification styles */
+              .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background-color: #4CAF50;
+                color: white;
+                border-radius: 5px;
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+                z-index: 1050;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: opacity 0.3s, transform 0.3s;
+                max-width: 350px;
+              }
+
+              .notification.error {
+                background-color: #f44336;
+              }
+
+              .notification.warning {
+                background-color: #ff9800;
+              }
+
+              .notification.show {
+                opacity: 1;
+                transform: translateY(0);
+              }
+
+              /* Dark mode adjustments for notifications */
+              body.dark-mode .notification {
+                box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+              }
+
+              body.dark-mode .notification.success {
+                background-color: #388E3C;
+              }
+
+              body.dark-mode .notification.error {
+                background-color: #d32f2f;
+              }
+
+              body.dark-mode .notification.warning {
+                background-color: #f57c00;
+              }
+
+              @media (max-width: 768px) {
+                .notification {
+                  top: 10px;
+                  right: 10px;
+                  left: 10px;
+                  width: auto;
+                }
+              }
+
+              /* Recipe View Modal Styles */
+              .recipe-view-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 20px;
+                margin-bottom: 30px;
+              }
+
+              .recipe-view-image {
+                flex: 1;
+                min-width: 250px;
+              }
+
+              .recipe-view-image img {
+                width: 100%;
+                border-radius: 8px;
+                object-fit: cover;
+                max-height: 300px;
+              }
+
+              .recipe-view-details {
+                flex: 2;
+                min-width: 300px;
+              }
+
+              .recipe-view-category {
+                margin-top: 15px;
+              }
+
+              .category-tag {
+                display: inline-block;
+                padding: 5px 10px;
+                background-color: var(--terracotta);
+                color: white;
+                border-radius: 20px;
+                font-size: 0.9em;
+              }
+
+              .view-list {
+                padding-left: 20px;
+              }
+
+              .view-list li,
+              .view-list li {
+                margin-bottom: 10px;
+              }
+
+              .recipe-date {
+                margin-top: 20px;
+                font-style: italic;
+                color: #666;
+              }
+
+              .recipe-meta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 15px;
+                margin-top: 15px;
+                color: #666;
+              }
+
+              .recipe-meta span {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+              }
+
+              .recipe-meta i {
+                color: var(--terracotta);
+              }
+
+              /* Dark mode adjustments */
+              .dark-mode .recipe-view-details {
+                color: #e0e0e0;
+              }
+
+              .dark-mode .recipe-meta {
+                color: #bbb;
+              }
+
+              .dark-mode .recipe-date {
+                color: #aaa;
+              }
+
+              .dark-mode .view-list {
+                color: #e0e0e0;
+              }
+
+              /* Recipe Card Actions Styles */
+              .recipe-card-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 15px;
+              }
+
+              .recipe-card-actions button {
+                flex: 1;
+                padding: 8px 12px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-weight: 500;
+                transition: background-color 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+              }
+
+              .view-btn {
+                background-color: var(--terracotta);
+                color: white;
+              }
+
+              .view-btn:hover {
+                background-color: var(--terracotta-dark);
+              }
+
+              .delete-btn {
+                background-color: #f5f5f5;
+                color: #666;
+              }
+
+              .delete-btn:hover {
+                background-color: #ff6b6b;
+                color: white;
+              }
+
+              /* Dark mode adjustments for buttons */
+              .dark-mode .delete-btn {
+                background-color: #444;
+                color: #ddd;
+              }
+
+              .dark-mode .delete-btn:hover {
+                background-color: #c62828;
+                color: white;
+              }
+
+              @media (max-width: 768px) {
+                .recipe-view-container {
+                  flex-direction: column;
+                }
+              }
+            </style>
+
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                // Create Recipe Modal functionality
+                const createRecipeBtn = document.querySelector('.create-recipe-btn');
+                const modal = document.getElementById('create-recipe-modal');
+                const modalClose = document.querySelector('.modal-close');
+                const cancelBtn = document.getElementById('cancel-recipe');
+
+                if (createRecipeBtn) {
+                  createRecipeBtn.addEventListener('click', function () {
+                    modal.classList.add('active');
+                    document.body.classList.add('modal-open');
+                  });
+                }
+
+                if (modalClose) {
+                  modalClose.addEventListener('click', function () {
+                    closeModal();
+                  });
+                }
+
+                if (cancelBtn) {
+                  cancelBtn.addEventListener('click', function () {
+                    closeModal();
+                  });
+                }
+
+                // Close modal if clicking outside
+                window.addEventListener('click', function (event) {
+                  if (event.target === modal) {
+                    closeModal();
+                  }
+                });
+
+                function closeModal() {
+                  modal.classList.remove('active');
+                  document.body.classList.remove('modal-open');
+                  document.getElementById('recipe-form').reset();
+
+                  // Clear dynamic fields
+                  document.getElementById('ingredients-list').innerHTML = '';
+                  document.getElementById('instructions-list').innerHTML = '';
+
+                  // Add one empty ingredient and instruction field
+                  addIngredientField();
+                  addInstructionField();
+                }
+
+                // Add/remove ingredient fields
+                document.getElementById('add-ingredient').addEventListener('click', function () {
+                  addIngredientField();
+                });
+
+                function addIngredientField() {
+                  const list = document.getElementById('ingredients-list');
+                  const item = document.createElement('li');
+                  item.className = 'ingredient-item';
+
+                  item.innerHTML = `
+                <input type="text" placeholder="Ingredient" required>
+                <button type="button" class="remove-item">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+                  const removeBtn = item.querySelector('.remove-item');
+                  removeBtn.addEventListener('click', function () {
+                    item.remove();
+                  });
+
+                  list.appendChild(item);
+                }
+
+                // Add/remove instruction fields
+                document.getElementById('add-instruction').addEventListener('click', function () {
+                  addInstructionField();
+                });
+
+                function addInstructionField() {
+                  const list = document.getElementById('instructions-list');
+                  const item = document.createElement('li');
+                  item.className = 'instruction-item';
+
+                  item.innerHTML = `
+                <textarea placeholder="Step instruction" required></textarea>
+                <button type="button" class="remove-item">
+                    <i class="fas fa-times"></i>
+                </button>
+            `;
+
+                  const removeBtn = item.querySelector('.remove-item');
+                  removeBtn.addEventListener('click', function () {
+                    item.remove();
+                  });
+
+                  list.appendChild(item);
+                }
+
+                // Initialize with one empty field each
+                addIngredientField();
+                addInstructionField();
+
+                // Form submission
+                document.getElementById('recipe-form').addEventListener('submit', function (e) {
+                  e.preventDefault();
+
+                  // Generate unique ID
+                  const recipeId = 'recipe_' + Date.now();
+
+                  // Gather ingredients
+                  const ingredientInputs = document.querySelectorAll('#ingredients-list input');
+                  const ingredients = Array.from(ingredientInputs).map(input => input.value.trim()).filter(value => value !== '');
+
+                  // Gather instructions
+                  const instructionInputs = document.querySelectorAll('#instructions-list textarea');
+                  const instructions = Array.from(instructionInputs).map(input => input.value.trim()).filter(value => value !== '');
+
+                  // Create recipe object
+                  const recipe = {
+                    id: recipeId,
+                    name: document.getElementById('recipe-name').value,
+                    description: document.getElementById('recipe-description').value,
+                    prepTime: parseInt(document.getElementById('prep-time').value),
+                    cookTime: parseInt(document.getElementById('cook-time').value),
+                    servings: parseInt(document.getElementById('servings').value),
+                    difficulty: document.getElementById('difficulty').value,
+                    imageUrl: document.getElementById('image-url').value || 'https://via.placeholder.com/300x200?text=Recipe+Image',
+                    ingredients: ingredients,
+                    instructions: instructions,
+                    category: document.getElementById('category').value,
+                    dateCreated: new Date().toISOString()
+                  };
+
+                  // Save recipe
+                  saveRecipe(recipe);
+
+                  // Close modal and show success message
+                  closeModal();
+                  showNotification('Recipe saved successfully!');
+                });
+
+                // Save recipe to local storage
+                function saveRecipe(recipe) {
+                  // Get existing recipes
+                  const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
+
+                  // Add new recipe
+                  savedRecipes.push(recipe);
+
+                  // Save back to storage
+                  localStorage.setItem('savedRecipes', JSON.stringify(savedRecipes));
+
+                  // Refresh the saved recipes list
+                  loadSavedRecipes();
+                }
+
+                // Load saved recipes
+                function loadSavedRecipes() {
+                  const savedRecipesContainer = document.getElementById('saved-recipes-list');
+                  const emptyState = document.getElementById('empty-saved-recipes');
+
+                  if (!savedRecipesContainer) return;
+
+                  // Clear current list
+                  savedRecipesContainer.innerHTML = '';
+
+                  // Get recipes from storage
+                  const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
+
+                  // Show/hide empty state
+                  if (savedRecipes.length === 0) {
+                    document.getElementById('saved-recipes-section').style.display = 'none';
+                    return;
+                  } else {
+                    document.getElementById('saved-recipes-section').style.display = 'block';
+                    if (emptyState) emptyState.style.display = 'none';
+                  }
+
+                  // Create a card for each recipe
+                  savedRecipes.forEach(recipe => {
+                    const card = createRecipeCard(recipe);
+                    savedRecipesContainer.appendChild(card);
+                  });
+                }
+
+                // Create a recipe card
+                function createRecipeCard(recipe) {
+                  const card = document.createElement('div');
+                  card.className = 'recipe-card saved-recipe';
+                  card.dataset.id = recipe.id;
+
+                  card.innerHTML = `
+                <div class="recipe-image" style="background-image: url('${recipe.imageUrl}')"></div>
+                <div class="recipe-info">
+                    <h3>${recipe.name}</h3>
+                    <p class="recipe-description">${recipe.description}</p>
+                    <div class="recipe-meta">
+                        <span><i class="far fa-clock"></i> ${recipe.prepTime + recipe.cookTime} min</span>
+                        <span><i class="fas fa-utensils"></i> ${recipe.difficulty}</span>
+                    </div>
+                    <div class="recipe-actions">
+                        <button class="view-recipe">View Recipe</button>
+                        <button class="delete-recipe"><i class="far fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+
+                  // Add event listeners
+                  card.querySelector('.view-recipe').addEventListener('click', function () {
+                    viewRecipe(recipe.id);
+                  });
+
+                  card.querySelector('.delete-recipe').addEventListener('click', function () {
+                    deleteRecipe(recipe.id);
+                  });
+
+                  return card;
+                }
+
+                // View a recipe
+                function viewRecipe(recipeId) {
+                  const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+                  const recipe = savedRecipes.find(r => r.id === recipeId);
+
+                  if (recipe) {
+                    // This would normally navigate to a recipe detail page
+                    // For now, we'll just show a notification
+                    showNotification('View recipe functionality will be implemented soon!');
+                  }
+                }
+
+                // Delete a recipe
+                function deleteRecipe(recipeId) {
+                  const savedRecipes = JSON.parse(localStorage.getItem('savedRecipes')) || [];
+                  const updatedRecipes = savedRecipes.filter(recipe => recipe.id !== recipeId);
+
+                  localStorage.setItem('savedRecipes', JSON.stringify(updatedRecipes));
+
+                  // Refresh the list
+                  loadSavedRecipes();
+
+                  showNotification('Recipe deleted!');
+                }
+
+                // Function to show notification
+                function showNotification(message, type = 'success') {
+                  const notification = document.createElement('div');
+                  notification.className = `notification ${type}`;
+                  notification.textContent = message;
+                  document.body.appendChild(notification);
+
+                  // Trigger animation
+                  setTimeout(() => {
+                    notification.classList.add('show');
+                  }, 10);
+
+                  // Auto-remove notification
+                  setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                      document.body.removeChild(notification);
+                    }, 300);
+                  }, 3000);
+                }
+
+                // Initialize
+                loadSavedRecipes();
+              });
+
+              // Close view modal when clicking outside the modal
+              window.onclick = function (event) {
+                const viewModal = document.getElementById('viewRecipeModal');
+                const createModal = document.getElementById('createRecipeModal');
+
+                if (event.target === viewModal) {
+                  viewModal.style.display = 'none';
+                }
+
+                if (event.target === createModal) {
+                  createModal.style.display = 'none';
+                }
+              };
+
+              // Function to show/hide saved recipes section
+              function showSavedRecipes() {
+                const homepage = document.getElementById('homepage');
+                const savedRecipesSection = document.getElementById('saved-recipes');
+                const recipeDetailPage = document.getElementById('recipe');
+
+                homepage.style.display = 'none';
+                savedRecipesSection.style.display = 'block';
+                recipeDetailPage.style.display = 'none';
+
+                loadSavedRecipes();
+              }
+
+              // Function to load saved recipes from localStorage and display them
+              function loadSavedRecipes() {
+                const savedRecipesContainer = document.getElementById('saved-recipes-container');
+                const noSavedRecipes = document.getElementById('no-saved-recipes');
+
+                // Retrieve saved recipes from localStorage
+                const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+
+                // Clear the container
+                savedRecipesContainer.innerHTML = '';
+
+                if (savedRecipes.length === 0) {
+                  noSavedRecipes.style.display = 'block';
+                  savedRecipesContainer.style.display = 'none';
+                  return;
+                }
+
+                // Hide no recipes message and show container
+                noSavedRecipes.style.display = 'none';
+                savedRecipesContainer.style.display = 'grid';
+
+                // Create a card for each saved recipe
+                savedRecipes.forEach(recipe => {
+                  const recipeCard = document.createElement('div');
+                  recipeCard.className = 'recipe-card';
+
+                  // Determine difficulty class
+                  const difficultyClass = `difficulty-${recipe.difficulty.toLowerCase()}`;
+
+                  recipeCard.innerHTML = `
+                        <div class="recipe-difficulty ${difficultyClass}">${recipe.difficulty.charAt(0).toUpperCase() + recipe.difficulty.slice(1)}</div>
+                        <div class="card-image" style="background-image: url('${recipe.imageUrl || 'https://via.placeholder.com/400x300?text=No+Image+Available'}');"></div>
+                        <div class="card-content">
+                            <h3>${recipe.name}</h3>
+                            <p>${recipe.description.substring(0, 100)}${recipe.description.length > 100 ? '...' : ''}</p>
+                            <div class="recipe-meta">
+                                <div><i>⏱️</i> ${parseInt(recipe.prepTime) + parseInt(recipe.cookTime)} mins</div>
+                                <div><i>🍴</i> ${recipe.category}</div>
+                            </div>
+                            <div class="recipe-card-actions">
+                                <button onclick="showRecipeDetail('${recipe.id}')" class="view-details-btn">View Recipe</button>
+                                <button onclick="deleteRecipe('${recipe.id}')" class="btn-secondary delete-btn">Delete</button>
+                            </div>
+                        </div>
+                    `;
+
+                  savedRecipesContainer.appendChild(recipeCard);
+                });
+              }
+
+              // Function to delete a recipe
+              function deleteRecipe(recipeId) {
+                if (confirm('Are you sure you want to delete this recipe?')) {
+                  const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+                  const updatedRecipes = savedRecipes.filter(recipe => recipe.id !== recipeId);
+
+                  localStorage.setItem('recipes', JSON.stringify(updatedRecipes));
+                  loadSavedRecipes();
+
+                  showNotification('Recipe deleted successfully');
+                }
+              }
+
+              // Create Recipe form functionality
+              function showCreateRecipeForm() {
+                // Reset the form
+                document.getElementById('recipeForm').reset();
+                document.getElementById('ingredientsList').innerHTML = '';
+                document.getElementById('instructionsList').innerHTML = '';
+
+                // Add initial ingredient and instruction fields
+                addIngredientField();
+                addInstructionField();
+
+                // Show the modal
+                document.getElementById('createRecipeModal').style.display = 'block';
+              }
+
+              function closeCreateRecipeForm() {
+                document.getElementById('createRecipeModal').style.display = 'none';
+              }
+
+              function addIngredientField() {
+                const ingredientsList = document.getElementById('ingredientsList');
+                const ingredientDiv = document.createElement('div');
+                ingredientDiv.className = 'input-with-button';
+
+                ingredientDiv.innerHTML = `
+                    <input type="text" placeholder="Enter ingredient" class="ingredient-input" required>
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                `;
+
+                ingredientsList.appendChild(ingredientDiv);
+              }
+
+              function addInstructionField() {
+                const instructionsList = document.getElementById('instructionsList');
+                const instructionDiv = document.createElement('div');
+                instructionDiv.className = 'input-with-button';
+
+                instructionDiv.innerHTML = `
+                    <textarea placeholder="Enter instruction step" class="instruction-input" required></textarea>
+                    <button type="button" class="remove-btn" onclick="this.parentElement.remove()">×</button>
+                `;
+
+                instructionsList.appendChild(instructionDiv);
+              }
+
+              // Initialize event listeners
+              document.addEventListener('DOMContentLoaded', function () {
+                // Add ingredient button
+                document.getElementById('addIngredientBtn').addEventListener('click', addIngredientField);
+
+                // Add instruction button
+                document.getElementById('addInstructionBtn').addEventListener('click', addInstructionField);
+
+                // Close modal button
+                document.getElementById('closeModalBtn').addEventListener('click', closeCreateRecipeForm);
+
+                // Recipe form submission
+                document.getElementById('recipeForm').addEventListener('submit', function (e) {
+                  e.preventDefault();
+
+                  // Get form values
+                  const name = document.getElementById('recipeName').value;
+                  const description = document.getElementById('recipeDescription').value;
+                  const prepTime = document.getElementById('prepTime').value;
+                  const cookTime = document.getElementById('cookTime').value;
+                  const servings = document.getElementById('servings').value;
+                  const difficulty = document.getElementById('difficulty').value;
+                  const imageUrl = document.getElementById('recipeImage').value;
+                  const category = document.getElementById('category').value;
+
+                  // Get ingredients
+                  const ingredientInputs = document.querySelectorAll('.ingredient-input');
+                  const ingredients = Array.from(ingredientInputs).map(input => input.value);
+
+                  // Get instructions
+                  const instructionInputs = document.querySelectorAll('.instruction-input');
+                  const instructions = Array.from(instructionInputs).map(input => input.value);
+
+                  // Create recipe object
+                  const recipe = {
+                    id: 'recipe_' + Date.now(),
+                    name,
+                    description,
+                    prepTime,
+                    cookTime,
+                    servings,
+                    difficulty,
+                    imageUrl,
+                    category,
+                    ingredients,
+                    instructions,
+                    dateCreated: new Date().toISOString()
+                  };
+
+                  // Save to localStorage if checkbox is checked
+                  if (document.getElementById('saveToMyRecipes').checked) {
+                    const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+                    savedRecipes.push(recipe);
+                    localStorage.setItem('recipes', JSON.stringify(savedRecipes));
+
+                    showNotification('Recipe saved successfully!');
+                  }
+
+                  // Close the modal
+                  closeCreateRecipeForm();
+
+                  // Redirect to saved recipes page
+                  if (document.getElementById('saveToMyRecipes').checked) {
+                    showSavedRecipes();
+                  }
+                });
+
+                // Initialize the page
+                loadSavedRecipes();
+              });
+
+              // Initial load of saved recipes
+              loadSavedRecipes();
+
+              // Close view modal when the close button is clicked
+              document.getElementById('closeViewModal').onclick = function () {
+                document.getElementById('viewRecipeModal').style.display = 'none';
+              };
+
+              // Handle navigation functionality
+              document.addEventListener('DOMContentLoaded', function () {
+                // Handle Recipes navigation
+                const recipesNavLinks = document.querySelectorAll('#recipesNavLink, #mobileRecipesLink');
+                recipesNavLinks.forEach(link => {
+                  link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    // Show the latest recipes section
+                    document.getElementById('homepage').style.display = 'block';
+                    document.getElementById('saved-recipes').style.display = 'none';
+                    document.getElementById('recipe').style.display = 'none';
+
+                    // Update active class for mobile navigation
+                    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                      item.classList.remove('active');
+                    });
+                    if (this.classList.contains('mobile-nav-item')) {
+                      this.classList.add('active');
+                    } else {
+                      document.querySelector('.mobile-nav-item:nth-child(2)').classList.add('active');
+                    }
+
+                    // Scroll to the latest recipes section
+                    document.querySelector('.latest-recipes').scrollIntoView({ behavior: 'smooth' });
+                  });
+                });
+
+                // Handle mobile menu toggle
+                const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+                const nav = document.querySelector('nav');
+
+                if (mobileMenuToggle) {
+                  mobileMenuToggle.addEventListener('click', function () {
+                    nav.classList.toggle('mobile-nav-open');
+                  });
+                }
+
+                // Update active class in mobile nav when showing saved recipes
+                const savedRecipesBtn = document.getElementById('savedRecipesBtn');
+                if (savedRecipesBtn) {
+                  const originalShowSavedRecipes = window.showSavedRecipes;
+                  window.showSavedRecipes = function () {
+                    originalShowSavedRecipes();
+
+                    // Update active class for mobile navigation
+                    document.querySelectorAll('.mobile-nav-item').forEach(item => {
+                      item.classList.remove('active');
+                    });
+                    document.querySelector('.mobile-nav-item:nth-child(4)').classList.add('active');
+                  };
+                }
+
+                // Handle dark mode toggle
+                const darkModeToggle = document.getElementById('darkModeToggle');
+                const body = document.body;
+
+                // Check for saved theme preference or default to user's preference
+                const savedTheme = localStorage.getItem('darkMode');
+                if (savedTheme === 'dark') {
+                  body.classList.add('dark-mode');
+                  darkModeToggle.checked = true;
+                } else if (savedTheme === 'light') {
+                  body.classList.remove('dark-mode');
+                  darkModeToggle.checked = false;
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                  // If no saved preference, use system preference
+                  body.classList.add('dark-mode');
+                  darkModeToggle.checked = true;
+                }
+
+                darkModeToggle.addEventListener('change', function () {
+                  if (this.checked) {
+                    body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'dark');
+                  } else {
+                    body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'light');
+                  }
+                });
+              });
+
+              // ... existing code ...
+
+              // Handle navigation functionality
+              document.addEventListener('DOMContentLoaded', function () {
+                // ... existing code ...
+
+                // Initialize the page
+                loadSavedRecipes();
+
+                // Load built-in recipes data
+                loadBuiltInRecipes();
+              });
+
+              // Function to show recipe details
+              function showRecipeDetail(recipeId) {
+                // First check if it's a built-in recipe
+                const builtInRecipe = builtInRecipes.find(r => r.id === recipeId);
+
+                if (builtInRecipe) {
+                  displayRecipeDetail(builtInRecipe);
+                  return;
+                }
+
+                // Check if it's a user-saved recipe
+                const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+                const savedRecipe = savedRecipes.find(r => r.id === recipeId);
+
+                if (savedRecipe) {
+                  displayRecipeDetail(savedRecipe);
+                  return;
+                }
+
+                // If we get here, the recipe wasn't found
+                showNotification('Recipe not found', 'error');
+              }
+
+              // Function to display the recipe detail page
+              function displayRecipeDetail(recipe) {
+                // Hide other pages and show recipe detail
+                document.getElementById('homepage').style.display = 'none';
+                document.getElementById('saved-recipes').style.display = 'none';
+                document.getElementById('recipe').style.display = 'block';
+
+                // Update recipe header
+                const recipeHeader = document.querySelector('.recipe-header');
+                recipeHeader.style.backgroundImage = `url('${recipe.imageUrl || 'assets/meat-sadj-vegetables-greens-spices-top-view_140725-11308.avif'}')`;
+
+                // Update recipe title and description
+                document.querySelector('.recipe-header-overlay h1').textContent = recipe.name;
+                document.querySelector('.recipe-header-overlay p').textContent = recipe.description;
+
+                // Update recipe meta info
+                document.querySelector('.recipe-details-meta .meta-item:nth-child(1) p').textContent =
+                  (recipe.prepTime || '0') + ' minutes';
+                document.querySelector('.recipe-details-meta .meta-item:nth-child(2) p').textContent =
+                  (recipe.cookTime || '0') + ' minutes';
+                document.getElementById('servingsCount').textContent = recipe.servings || '4';
+
+                // Update difficulty
+                const difficultyBadge = document.querySelector('.difficulty-badge');
+                difficultyBadge.className = 'difficulty-badge ' + (recipe.difficulty || 'medium').toLowerCase();
+                difficultyBadge.textContent = recipe.difficulty || 'Medium';
+
+                // Update ingredients
+                const ingredientsContainer = document.querySelector('.ingredients');
+                const ingredientItems = ingredientsContainer.querySelectorAll('.ingredient-item');
+
+                // Remove existing ingredients
+                ingredientItems.forEach(item => {
+                  if (!item.classList.contains('ingredient-template')) {
+                    item.remove();
+                  }
+                });
+
+                // Add new ingredients
+                if (recipe.ingredients && recipe.ingredients.length) {
+                  const ingredientsList = document.createElement('div');
+                  ingredientsList.className = 'ingredients-list';
+
+                  recipe.ingredients.forEach(ingredient => {
+                    const item = document.createElement('div');
+                    item.className = 'ingredient-item';
+                    item.innerHTML = `
+                              <input type="checkbox">
+                              <span>${ingredient}</span>
+                          `;
+                    ingredientsList.appendChild(item);
+                  });
+
+                  // Add after the ingredients actions
+                  const ingredientsActions = ingredientsContainer.querySelector('.ingredients-actions');
+                  if (ingredientsActions) {
+                    ingredientsActions.insertAdjacentElement('afterend', ingredientsList);
+                  } else {
+                    ingredientsContainer.appendChild(ingredientsList);
+                  }
+                }
+
+                // Update instructions
+                const instructionsContainer = document.querySelector('.instructions');
+                const steps = instructionsContainer.querySelectorAll('.step');
+
+                // Remove existing steps
+                steps.forEach(step => {
+                  if (!step.classList.contains('step-template')) {
+                    step.remove();
+                  }
+                });
+
+                // Add new steps
+                if (recipe.instructions && recipe.instructions.length) {
+                  recipe.instructions.forEach((instruction, index) => {
+                    const step = document.createElement('div');
+                    step.className = 'step';
+                    step.innerHTML = `
+                              <span class="step-number">${index + 1}</span>
+                              ${instruction}
+                          `;
+                    instructionsContainer.appendChild(step);
+                  });
+                }
+
+                // Update save button
+                const saveButton = document.getElementById('saveButton');
+                if (saveButton) {
+                  // Check if recipe is already saved
+                  const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+                  const isSaved = savedRecipes.some(r => r.id === recipe.id);
+
+                  if (isSaved) {
+                    saveButton.innerHTML = '<i>❤️</i> Recipe Saved';
+                    saveButton.onclick = function () {
+                      showNotification('Recipe already saved');
+                    };
+                  } else {
+                    saveButton.innerHTML = '<i>♥</i> Save Recipe';
+                    saveButton.onclick = function () {
+                      saveRecipeToLocal(recipe);
+                    };
+                  }
+                }
+
+                // Scroll to top
+                window.scrollTo(0, 0);
+              }
+
+              // Save recipe to localStorage
+              function saveRecipeToLocal(recipe) {
+                const savedRecipes = JSON.parse(localStorage.getItem('recipes') || '[]');
+
+                // Check if recipe already exists
+                if (savedRecipes.some(r => r.id === recipe.id)) {
+                  showNotification('Recipe already saved');
+                  return;
+                }
+
+                // Add recipe to saved recipes
+                savedRecipes.push(recipe);
+                localStorage.setItem('recipes', JSON.stringify(savedRecipes));
+
+                // Update save button
+                const saveButton = document.getElementById('saveButton');
+                if (saveButton) {
+                  saveButton.innerHTML = '<i>❤️</i> Recipe Saved';
+                  saveButton.onclick = function () {
+                    showNotification('Recipe already saved');
+                  };
+                }
+
+                showNotification('Recipe saved successfully!');
+              }
+
+              // Load built-in recipes data
+              function loadBuiltInRecipes() {
+                console.log('Loading built-in recipes...');
+
+                window.builtInRecipes = [
+                  {
+                    id: 'curry',
+                    name: 'Aromatic Chicken Curry',
+                    description: 'Rich and flavorful curry with tender chicken pieces, aromatic spices, and a velvety sauce.',
+                    prepTime: 15,
+                    cookTime: 30,
+                    servings: 4,
+                    difficulty: 'Medium',
+                    imageUrl: 'assets/curry-with-chicken-onions-indian-food-asian-cuisine_2829-4415.avif',
+                    category: 'Indian',
+                    ingredients: [
+                      '2 lbs boneless chicken thighs, cut into chunks',
+                      '2 tbsp vegetable oil',
+                      '1 large onion, finely chopped',
+                      '4 garlic cloves, minced',
+                      '1 tbsp ginger, grated',
+                      '2 tbsp curry powder',
+                      '1 tsp ground cumin',
+                      '1 tsp ground coriander',
+                      '1/2 tsp turmeric',
+                      '1/4 tsp cayenne pepper (adjust to taste)',
+                      '1 can (14 oz) coconut milk',
+                      '1 can (14 oz) diced tomatoes',
+                      '1 tbsp tomato paste',
+                      'Salt and pepper to taste',
+                      'Fresh cilantro for garnish',
+                      'Cooked rice for serving'
+                    ],
+                    instructions: [
+                      'Heat oil in a large pot over medium heat. Add onions and cook until softened, about 5 minutes.',
+                      'Add garlic and ginger, cook for another minute until fragrant.',
+                      'Add all spices and stir for 30 seconds to bloom the flavors.',
+                      'Add chicken pieces and stir to coat with spices. Cook for 5 minutes until chicken begins to brown.',
+                      'Pour in coconut milk, diced tomatoes, and tomato paste. Stir to combine.',
+                      'Bring to a simmer, then reduce heat to low. Cover and cook for 20-25 minutes until chicken is tender.',
+                      'Taste and adjust seasoning with salt and pepper.',
+                      'Serve over rice and garnish with fresh cilantro.'
+                    ]
+                  },
+                  {
+                    id: 'soup',
+                    name: 'Hearty Meat & Vegetable Soup',
+                    description: 'A satisfying soup loaded with tender meat, potatoes, and fresh herbs in a rich broth.',
+                    prepTime: 20,
+                    cookTime: 30,
+                    servings: 6,
+                    difficulty: 'Easy',
+                    imageUrl: 'assets/front-view-meat-sauce-soup-with-greens-potatoes-dark-desk-soup-meal-sauce-meat_140725-79067.avif',
+                    category: 'Comfort Food',
+                    ingredients: [
+                      '1 lb beef stew meat, cut into small pieces',
+                      '2 tbsp olive oil',
+                      '1 onion, diced',
+                      '2 carrots, sliced',
+                      '2 celery stalks, sliced',
+                      '2 cloves garlic, minced',
+                      '4 cups beef broth',
+                      '1 can (14 oz) diced tomatoes',
+                      '2 potatoes, peeled and cubed',
+                      '1 tsp dried thyme',
+                      '1 bay leaf',
+                      'Salt and pepper to taste',
+                      'Fresh parsley for garnish'
+                    ],
+                    instructions: [
+                      'Heat olive oil in a large pot over medium-high heat. Add beef and brown on all sides, about 5 minutes.',
+                      'Add onion, carrots, celery, and garlic. Cook until vegetables begin to soften, about 5 minutes.',
+                      'Pour in beef broth and diced tomatoes. Add thyme, bay leaf, salt, and pepper.',
+                      'Bring to a boil, then reduce heat to low. Simmer for 15 minutes.',
+                      'Add potatoes and continue to simmer until potatoes are tender, about 15 minutes more.',
+                      'Remove bay leaf. Adjust seasoning if needed.',
+                      'Serve hot, garnished with fresh parsley.'
+                    ]
+                  },
+                  {
+                    id: 'shrimp',
+                    name: 'Garlic Butter Shrimp',
+                    description: 'Succulent shrimp sautéed in a garlic butter sauce with a hint of lemon and fresh herbs.',
+                    prepTime: 10,
+                    cookTime: 10,
+                    servings: 4,
+                    difficulty: 'Medium',
+                    imageUrl: 'assets/fried-shrimp-with-garlic_1339-57964.avif',
+                    category: 'Seafood',
+                    ingredients: [
+                      '1 lb large shrimp, peeled and deveined',
+                      '4 tbsp butter',
+                      '4 cloves garlic, minced',
+                      '1/4 cup white wine or chicken broth',
+                      '2 tbsp lemon juice',
+                      '2 tbsp fresh parsley, chopped',
+                      '1/4 tsp red pepper flakes (optional)',
+                      'Salt and pepper to taste',
+                      'Lemon wedges for serving'
+                    ],
+                    instructions: [
+                      'Pat shrimp dry with paper towels and season with salt and pepper.',
+                      'In a large skillet, melt 2 tablespoons of butter over medium-high heat.',
+                      'Add shrimp to the skillet in a single layer. Cook for 1-2 minutes per side until pink and opaque. Transfer to a plate.',
+                      'In the same skillet, add remaining butter and garlic. Cook for 30 seconds until fragrant.',
+                      'Add white wine or broth, lemon juice, and red pepper flakes (if using). Simmer for 2 minutes to reduce slightly.',
+                      'Return shrimp to the skillet and toss to coat in the sauce. Heat through for 1 minute.',
+                      'Remove from heat and sprinkle with fresh parsley.',
+                      'Serve immediately with lemon wedges.'
+                    ]
+                  },
+                  {
+                    id: 'fajitas',
+                    name: 'Sizzling Chicken Fajitas',
+                    description: 'Juicy chicken strips with colorful bell peppers and onions, served with warm tortillas.',
+                    prepTime: 15,
+                    cookTime: 15,
+                    servings: 4,
+                    difficulty: 'Medium',
+                    imageUrl: 'assets/chicken-fajita-chicken-fillet-fried-with-bell-pepper-lavash-with-bread-slices-white-plate_114579-144.avif',
+                    category: 'Mexican',
+                    ingredients: [
+                      '1.5 lbs boneless, skinless chicken breasts, sliced into strips',
+                      '2 bell peppers (different colors), sliced',
+                      '1 large onion, sliced',
+                      '3 tbsp olive oil',
+                      '2 tsp chili powder',
+                      '1 tsp ground cumin',
+                      '1 tsp garlic powder',
+                      '1/2 tsp dried oregano',
+                      '1/2 tsp paprika',
+                      'Salt and pepper to taste',
+                      '8 flour tortillas',
+                      'Lime wedges for serving',
+                      'Optional toppings: sour cream, shredded cheese, guacamole, salsa'
+                    ],
+                    instructions: [
+                      'In a small bowl, mix together chili powder, cumin, garlic powder, oregano, paprika, salt, and pepper.',
+                      'In a large bowl, toss chicken strips with 2 tablespoons of olive oil and half of the spice mixture.',
+                      'Heat a large skillet or cast-iron pan over high heat. Add chicken and cook for 5-6 minutes until browned and cooked through. Transfer to a plate.',
+                      'In the same pan, add remaining olive oil, bell peppers, and onions. Cook for 5-7 minutes until slightly charred but still crisp.',
+                      'Return chicken to the pan with vegetables and sprinkle with remaining spice mixture. Toss to combine and heat through.',
+                      'Warm tortillas according to package instructions.',
+                      'Serve fajitas with warm tortillas, lime wedges, and your choice of toppings.'
+                    ]
+                  },
+                  {
+                    id: 'steak',
+                    name: 'Perfect Filet Mignon',
+                    description: 'Tender filet mignon cooked to perfection, served with roasted potatoes and asparagus.',
+                    prepTime: 10,
+                    cookTime: 30,
+                    servings: 2,
+                    difficulty: 'Hard',
+                    imageUrl: 'assets/isolated-plate-fillet-mignon-steak-with-potato_219193-7303.avif',
+                    category: 'Steak',
+                    ingredients: [
+                      '2 filet mignon steaks (6-8 oz each), at room temperature',
+                      '2 tbsp butter',
+                      '2 cloves garlic, crushed',
+                      '2 sprigs fresh rosemary',
+                      'Salt and freshly ground black pepper',
+                      '1 lb baby potatoes, halved',
+                      '1 bunch asparagus, trimmed',
+                      '2 tbsp olive oil',
+                      '1 tsp fresh thyme leaves'
+                    ],
+                    instructions: [
+                      'Preheat oven to 425°F (220°C).',
+                      'Season steaks generously with salt and pepper on both sides.',
+                      'Toss potatoes with 1 tbsp olive oil, salt, and pepper. Arrange on a baking sheet and roast for 20 minutes.',
+                      'In a cast-iron skillet, heat 1 tbsp olive oil over high heat until almost smoking.',
+                      'Sear steaks for 2-3 minutes on each side until a nice crust forms.',
+                      'Reduce heat to medium. Add butter, garlic, and rosemary to the pan.',
+                      'Tilt the pan and spoon the melted butter over the steaks continuously for 1-2 minutes.',
+                      'Transfer steaks to a cutting board and let rest for 5-10 minutes.',
+                      'Add asparagus to the baking sheet with potatoes, toss with remaining juices, and roast for 10 more minutes.',
+                      'Serve steaks with roasted potatoes and asparagus.'
+                    ]
+                  },
+                  {
+                    id: 'thali',
+                    name: 'Indian Thali Platter',
+                    description: 'A flavorful assortment of traditional Indian dishes with rice, breads, and chutneys.',
+                    prepTime: 30,
+                    cookTime: 60,
+                    servings: 4,
+                    difficulty: 'Easy',
+                    imageUrl: 'assets/delicious-indian-food-tray_23-2148723505.avif',
+                    category: 'Indian',
+                    ingredients: [
+                      'For Dal:',
+                      '1 cup yellow lentils',
+                      '1 tbsp ghee or oil',
+                      '1 tsp cumin seeds',
+                      '1 small onion, finely chopped',
+                      '2 cloves garlic, minced',
+                      '1 tsp turmeric',
+                      'Salt to taste',
+
+                      'For Rice:',
+                      '1 cup basmati rice',
+                      '2 cups water',
+                      '1 tsp salt',
+
+                      'For Mixed Vegetables:',
+                      '2 cups mixed vegetables (carrots, peas, cauliflower)',
+                      '1 tbsp oil',
+                      '1 tsp mustard seeds',
+                      '1 tsp ground coriander',
+                      '1/2 tsp ground cumin',
+                      'Salt to taste',
+
+                      'For Raita:',
+                      '1 cup yogurt',
+                      '1/2 cucumber, grated',
+                      '1/4 tsp cumin powder',
+                      'Salt to taste',
+
+                      'For Serving:',
+                      '4 pieces of naan or roti',
+                      'Mango chutney',
+                      'Fresh cilantro for garnish'
+                    ],
+                    instructions: [
+                      'Prepare Dal: Rinse lentils and cook in a pot with 3 cups water until soft, about 20 minutes.',
+                      'In a small pan, heat ghee, add cumin seeds, chopped onion, and garlic. Cook until golden.',
+                      'Add turmeric and salt, then pour this tempering into the cooked lentils. Simmer for 5 more minutes.',
+
+                      'Prepare Rice: Rinse rice until water runs clear. In a pot, combine rice, water, and salt.',
+                      'Bring to a boil, then reduce heat to low. Cover and cook for 15 minutes until water is absorbed.',
+                      'Remove from heat and let stand, covered, for 5 minutes. Fluff with a fork.',
+
+                      'Prepare Mixed Vegetables: Heat oil in a pan, add mustard seeds and let them splutter.',
+                      'Add mixed vegetables, coriander, cumin, and salt. Stir-fry for 2 minutes.',
+                      'Add 1/4 cup water, cover, and cook for 10 minutes until vegetables are tender.',
+
+                      'Prepare Raita: Mix yogurt, grated cucumber, cumin powder, and salt in a bowl.',
+
+                      'Warm naan or roti according to package instructions.',
+
+                      'Arrange all components on plates: rice, dal, mixed vegetables, raita, naan, and mango chutney.',
+                      'Garnish with fresh cilantro and serve.'
+                    ]
+                  }
+                ];
+
+                console.log('Built-in recipes loaded:', window.builtInRecipes);
+              }
+
+              // Call this when the page loads to make sure recipes are available
+              document.addEventListener('DOMContentLoaded', function () {
+                console.log('DOM fully loaded');
+                loadBuiltInRecipes();
+              });
+
+              // ... existing code ...
+              // Initialize saved recipes view on page load
+              document.addEventListener('DOMContentLoaded', function () {
+                // Set up recipe form handlers
+                initRecipeFormHandlers();
+
+                // Initialize the saved recipes section
+                updateSavedRecipesView();
+
+                // Dark mode toggle functionality
+                const darkModeToggle = document.getElementById('darkModeToggle');
+
+                // Check for saved preference and apply
+                const savedDarkMode = localStorage.getItem('darkMode');
+                if (savedDarkMode === 'enabled') {
+                  document.body.classList.add('dark-mode');
+                  darkModeToggle.checked = true;
+                }
+
+                // Toggle dark mode when switch is clicked
+                darkModeToggle.addEventListener('change', function () {
+                  if (this.checked) {
+                    document.body.classList.add('dark-mode');
+                    localStorage.setItem('darkMode', 'enabled');
+                    showNotification('Dark mode enabled', 'success');
+                  } else {
+                    document.body.classList.remove('dark-mode');
+                    localStorage.setItem('darkMode', 'disabled');
+                    showNotification('Light mode enabled', 'success');
+                  }
+                });
+
+                // "Create Recipe" button should show the form modal
+                document.querySelector('.create-recipe-btn').addEventListener('click', function () {
+                  // Reset form for new recipe
+                  const form = document.getElementById('recipeForm');
+                  form.reset();
+                  form.setAttribute('data-mode', 'create');
+                  form.removeAttribute('data-id');
+
+                  // Clear ingredients and instructions
+                  document.getElementById('ingredientsList').innerHTML = '';
+                  document.getElementById('instructionsList').innerHTML = '';
+
+                  // Add default empty fields
+                  document.getElementById('addIngredient').click();
+                  document.getElementById('addInstruction').click();
+
+                  // Update modal title
+                  document.querySelector('.modal-title').textContent = 'Create New Recipe';
+
+                  // Show modal
+                  document.getElementById('recipeModal').style.display = 'block';
+                });
+
+                // Close modal when clicking outside or on close button
+                document.getElementById('recipeModal').addEventListener('click', function (e) {
+                  if (e.target === this || e.target.classList.contains('close-modal')) {
+                    this.style.display = 'none';
+                  }
+                });
+
+                // Toggle saved recipes section
+                document.getElementById('savedRecipesBtn').addEventListener('click', function () {
+                  const savedRecipesSection = document.getElementById('savedRecipesSection');
+                  savedRecipesSection.classList.toggle('show');
+                  updateSavedRecipesView();
+                });
+
+                // Close saved recipes section
+                document.querySelector('.close-saved-recipes').addEventListener('click', function () {
+                  document.getElementById('savedRecipesSection').classList.remove('show');
+                });
+
+                // Create Recipe button inside empty state
+                document.querySelector('#savedRecipesEmpty .create-recipe-btn').addEventListener('click', function () {
+                  // Hide saved recipes section
+                  document.getElementById('savedRecipesSection').classList.remove('show');
+
+                  // Show create recipe modal
+                  document.querySelector('header .create-recipe-btn').click();
+                });
+              });
+            </script>
+          </body>
+
+          </html>

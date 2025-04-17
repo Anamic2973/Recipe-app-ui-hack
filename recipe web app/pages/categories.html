@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Categories - Savory Seasons</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/recipe-detail.css">
+    <link rel="stylesheet" href="../css/forms.css">
+    <link rel="stylesheet" href="../css/mobile.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Savory Seasons</h1>
+                </div>
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">☰</button>
+                    <nav>
+                        <ul>
+                            <li><a href="../index.html">Home</a></li>
+                            <li><a href="recipes.html">Recipes</a></li>
+                            <li><a href="categories.html" style="color: var(--terracotta);">Categories</a></li>
+                            <li><a href="../about.html">About</a></li>
+                            <li><a href="../contact.html">Contact</a></li>
+                        </ul>
+                    </nav>
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search recipes...">
+                        <button>🔍</button>
+                    </div>
+                    <button id="createRecipeBtn" class="create-recipe-btn" onclick="showCreateRecipeForm()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Create Recipe
+                    </button>
+                    <div class="dark-mode-toggle">
+                        <span>☀️</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                        <span>🌙</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container" style="padding-top: 40px; padding-bottom: 40px;">
+        <h1 class="section-heading">Browse All Categories</h1>
+
+        <!-- Large Category Grid -->
+        <div class="category-large-grid">
+            <div class="category-large-item" data-category="breakfast" id="breakfast">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1533089860892-a7c6f00a85d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Breakfast</h2>
+                        <p>15 Recipes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-large-item" data-category="lunch" id="lunch">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1547496502-affa22d38842?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Lunch</h2>
+                        <p>22 Recipes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-large-item" data-category="dinner" id="dinner">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1576402187878-974f70c890a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Dinner</h2>
+                        <p>31 Recipes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-large-item" data-category="dessert" id="dessert">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Dessert</h2>
+                        <p>18 Recipes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-large-item" data-category="snack" id="snack">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1619815322750-2cefb33ce094?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Snack</h2>
+                        <p>12 Recipes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category-large-item" data-category="beverage" id="beverage">
+                <div class="category-image"
+                    style="background-image: url('https://images.unsplash.com/photo-1595981267035-7b04ca84a82d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');">
+                    <div class="category-overlay">
+                        <h2>Beverage</h2>
+                        <p>9 Recipes</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-heading" id="cuisine-types">Cuisine Types</h2>
+
+        <div class="categories-grid" style="margin-bottom: 40px;">
+            <a href="#italian" class="category-item" data-category="italian" id="italian">
+                <div class="category-icon">🍝</div>
+                <h4>Italian</h4>
+            </a>
+            <a href="#mexican" class="category-item" data-category="mexican" id="mexican">
+                <div class="category-icon">🌮</div>
+                <h4>Mexican</h4>
+            </a>
+            <a href="#asian" class="category-item" data-category="asian" id="asian">
+                <div class="category-icon">🍜</div>
+                <h4>Asian</h4>
+            </a>
+            <a href="#indian" class="category-item" data-category="indian" id="indian">
+                <div class="category-icon">🍛</div>
+                <h4>Indian</h4>
+            </a>
+            <a href="#mediterranean" class="category-item" data-category="mediterranean" id="mediterranean">
+                <div class="category-icon">🫒</div>
+                <h4>Mediterranean</h4>
+            </a>
+            <a href="#american" class="category-item" data-category="american" id="american">
+                <div class="category-icon">🍔</div>
+                <h4>American</h4>
+            </a>
+        </div>
+
+        <h2 class="section-heading" id="dietary-preferences">Dietary Preferences</h2>
+
+        <div class="categories-grid" style="margin-bottom: 40px;">
+            <a href="#vegetarian" class="category-item" data-category="vegetarian" id="vegetarian">
+                <div class="category-icon">🥗</div>
+                <h4>Vegetarian</h4>
+            </a>
+            <a href="#vegan" class="category-item" data-category="vegan" id="vegan">
+                <div class="category-icon">🌱</div>
+                <h4>Vegan</h4>
+            </a>
+            <a href="#gluten-free" class="category-item" data-category="gluten-free" id="gluten-free">
+                <div class="category-icon">🌾</div>
+                <h4>Gluten-Free</h4>
+            </a>
+            <a href="#dairy-free" class="category-item" data-category="dairy-free" id="dairy-free">
+                <div class="category-icon">🥛</div>
+                <h4>Dairy-Free</h4>
+            </a>
+            <a href="#keto" class="category-item" data-category="keto" id="keto">
+                <div class="category-icon">🥑</div>
+                <h4>Keto</h4>
+            </a>
+            <a href="#paleo" class="category-item" data-category="paleo" id="paleo">
+                <div class="category-icon">🍖</div>
+                <h4>Paleo</h4>
+            </a>
+        </div>
+
+        <h2 class="section-heading" id="cooking-methods">Cooking Methods</h2>
+
+        <div class="categories-grid">
+            <a href="#baking" class="category-item" data-category="baking" id="baking">
+                <div class="category-icon">🎂</div>
+                <h4>Baking</h4>
+            </a>
+            <a href="#grilling" class="category-item" data-category="grilling" id="grilling">
+                <div class="category-icon">🔥</div>
+                <h4>Grilling</h4>
+            </a>
+            <a href="#air-fryer" class="category-item" data-category="air-fryer" id="air-fryer">
+                <div class="category-icon">🍟</div>
+                <h4>Air Fryer</h4>
+            </a>
+            <a href="#slow-cooker" class="category-item" data-category="slow-cooker" id="slow-cooker">
+                <div class="category-icon">🍲</div>
+                <h4>Slow Cooker</h4>
+            </a>
+            <a href="#no-cook" class="category-item" data-category="no-cook" id="no-cook">
+                <div class="category-icon">🥪</div>
+                <h4>No-Cook</h4>
+            </a>
+            <a href="#one-pot" class="category-item" data-category="one-pot" id="one-pot">
+                <div class="category-icon">🍳</div>
+                <h4>One-Pot</h4>
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <nav class="mobile-nav">
+        <a href="../index.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <span>Home</span>
+        </a>
+        <a href="recipes.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </div>
+            <span>Recipes</span>
+        </a>
+        <a href="#" class="mobile-nav-item" onclick="showCreateRecipeForm(); return false;">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="16"></line>
+                    <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+            </div>
+            <span>Create</span>
+        </a>
+        <a href="#" class="mobile-nav-item" onclick="showSavedRecipes(); return false;">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+            </div>
+            <span>Saved</span>
+        </a>
+    </nav>
+
+    <!-- Create Recipe Modal -->
+    <div id="createRecipeModal" class="modal">
+        <!-- This is a duplicate of the modal in index.html - it will be handled by JS -->
+    </div>
+
+    <!-- Saved Recipes Section -->
+    <div id="saved-recipes" class="container" style="display: none;">
+        <!-- This will be populated by JavaScript -->
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>© 2023 Recipe Blog - Savory Seasons</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="../js/main.js"></script>
+    <script src="../js/recipe-form.js"></script>
+    <script src="../js/recipe-detail.js"></script>
+    <script src="../js/cooking-mode.js"></script>
+    <script src="../js/categories.js"></script>
+</body>
+
+</html>
